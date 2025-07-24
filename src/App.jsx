@@ -1,7 +1,13 @@
-export default function App() {
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from './routes/AppRouter.jsx';
+
+const App = () => {
     return (
-        <div className="container-fluid mt-4">
-            <h1>CodersQuiz</h1>
-        </div>
+        <BrowserRouter>
+            <AppRouter />
+        </BrowserRouter>
     )
 }
+
+export default App;
