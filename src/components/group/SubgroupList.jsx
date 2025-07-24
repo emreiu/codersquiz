@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import QuizManager from '../quiz/QuizManager'
 
 const SubgroupList = ({ group, onUpdateGroup }) => {
     const [subgroupName, setSubgroupName] = useState('');
@@ -12,7 +13,7 @@ const SubgroupList = ({ group, onUpdateGroup }) => {
             return;
         }
         const nameExists = group.subgroups.some(
-            (subgroup) => subgroup.toLowerCase() === trimmedName.toLowerCase()
+            (subgroup) => subgroup.name.toLowerCase() === trimmedName.toLowerCase()
         )
 
         if (nameExists) {
@@ -22,12 +23,23 @@ const SubgroupList = ({ group, onUpdateGroup }) => {
 
         const updatedGroup = {
             ...group,
-            subgroups: [...group.subgroups, trimmedName]
+            subgroups: [...group.subgroups, { name: trimmedName, quizzes: [] }]
         }
 
         onUpdateGroup(updatedGroup);
         setSubgroupName('');
         setError('');
+    }
+
+    const handleUpdateSubgroup = (updatedSubgroup) => {
+        const updatedGroup = {
+            ...group,
+            subgroups: group.subgroups.map((subgroup) =>
+                subgroup.name === updatedSubgroup.name ? updatedSubgroup : sg
+            )
+        }
+
+        onUpdateGroup(updatedGroup)
     }
 
     return (
@@ -51,7 +63,11 @@ const SubgroupList = ({ group, onUpdateGroup }) => {
             <ul className="list-group list-group-sm">
                 {group.subgroups.map((subgroup, index) => (
                     <li key={index} className="list-group-item py-1">
-                        {subgroup}
+                        <div>{subgroup.name}</div>
+                        <QuizManager
+                        subgroup={subgroup}
+                        onUpdateSubgroup={handleUpdateSubgroup}
+                        />
                     </li>
                 ))}
             </ul>
