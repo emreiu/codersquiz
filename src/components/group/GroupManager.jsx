@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useQuizContext} from '../../context/QuizContext.jsx';
+import SubgroupList from './SubgroupList.jsx';
 
 const GroupManager = () => {
     const {state, setState} = useQuizContext();
@@ -13,21 +14,23 @@ const GroupManager = () => {
     })
 
     const handleAddGroup = () => {
+        const trimmedName = groupName.trim();
+
+        if (!trimmedName) {
+            setError('Group name cannot be empty');
+            return;
+        }
+
         const nameExists = state.groups.some(
-            (group) => group.name.toLowerCase() === groupName.trim().toLowerCase()
+            (group) => group.name.toLowerCase() === trimmedName.toLowerCase()
         )
 
         if (nameExists) {
-            setError('Group name already exists')
+            setError('Group already exists');
             return;
         }
 
-        if (!groupName.trim()) {
-            setError('Group name cannot be empty')
-            return;
-        }
-
-        const newGroup = createNewGroup(groupName);
+        const newGroup = createNewGroup(trimmedName);
 
         setState(prev => ({
             ...prev,
@@ -38,6 +41,14 @@ const GroupManager = () => {
         setError('');
     }
 
+    const handleUpdateGroup = (updatedGroup) => {
+        setState(prev => ({
+            ...prev,
+            groups: prev.groups.map(group =>
+            group.id === updatedGroup.id ? updatedGroup : group
+            )
+        }))
+    }
 
     return (
         <div>
@@ -60,7 +71,8 @@ const GroupManager = () => {
             <ul className="list-group">
                 {state.groups.map((group) => (
                     <li key={group.id} className="list-group-item">
-                        {group.name}
+                        <div>{group.name}</div>
+                        <SubgroupList group={group} onUpdateGroup={handleUpdateGroup} />
                     </li>
                 ))}
             </ul>
