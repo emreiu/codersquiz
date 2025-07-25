@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import QuizManager from '../quiz/QuizManager'
 
-const SubgroupList = ({ group, onUpdateGroup }) => {
+const SubgroupList = ({group, onUpdateGroup}) => {
     const [subgroupName, setSubgroupName] = useState('');
     const [error, setError] = useState('');
 
@@ -23,7 +23,7 @@ const SubgroupList = ({ group, onUpdateGroup }) => {
 
         const updatedGroup = {
             ...group,
-            subgroups: [...group.subgroups, { name: trimmedName, quizzes: [] }]
+            subgroups: [...group.subgroups, {name: trimmedName, quizzes: []}]
         }
 
         onUpdateGroup(updatedGroup);
@@ -35,7 +35,7 @@ const SubgroupList = ({ group, onUpdateGroup }) => {
         const updatedGroup = {
             ...group,
             subgroups: group.subgroups.map((subgroup) =>
-                subgroup.name === updatedSubgroup.name ? updatedSubgroup : sg
+                subgroup.name === updatedSubgroup.name ? updatedSubgroup : subgroup
             )
         }
 
@@ -53,7 +53,7 @@ const SubgroupList = ({ group, onUpdateGroup }) => {
                     placeholder="Enter subgroup name"
                     value={subgroupName}
                     onChange={(e) => setSubgroupName(e.target.value)}
-                    />
+                />
                 <button className="btn btn-sm btn-outline-primary mt-1" onClick={handleAddSubgroup}>
                     Add Subgroup
                 </button>
@@ -65,8 +65,9 @@ const SubgroupList = ({ group, onUpdateGroup }) => {
                     <li key={index} className="list-group-item py-1">
                         <div>{subgroup.name}</div>
                         <QuizManager
-                        subgroup={subgroup}
-                        onUpdateSubgroup={handleUpdateSubgroup}
+                            groupId={group.id}
+                            subgroup={subgroup}
+                            onUpdateSubgroup={handleUpdateSubgroup}
                         />
                     </li>
                 ))}

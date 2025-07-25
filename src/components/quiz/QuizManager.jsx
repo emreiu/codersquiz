@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const QuizManager = ({ subgroup, onUpdateSubgroup }) => {
+const QuizManager = ({ groupId, subgroup, onUpdateSubgroup }) => {
     const [quizTitle, setQuizTitle] = useState('');
     const [error, setError] = useState('');
 
@@ -32,6 +33,7 @@ const QuizManager = ({ subgroup, onUpdateSubgroup }) => {
             quizzes: [...(subgroup.quizzes || []), newQuiz]
         }
 
+        console.log(newQuiz);
         onUpdateSubgroup(updatedSubgroup);
         setQuizTitle('');
         setError('');
@@ -57,8 +59,14 @@ const QuizManager = ({ subgroup, onUpdateSubgroup }) => {
 
             <ul className="list-group">
                 {subgroup.quizzes?.map((quiz) => (
-                    <li key={quiz.id} className="list-group-item py-1">
+                    <li key={quiz.id} className="list-group-item py-1 d-flex justify-content-between align-items-center">
                         {quiz.title}
+                        <Link
+                            to={`/quiz/${groupId}/${subgroup.name}/${quiz.id}/edit`}
+                            className="btn btn-sm btn-outline-secondary"
+                        >
+                            Edit
+                        </Link>
                     </li>
                 ))}
             </ul>
