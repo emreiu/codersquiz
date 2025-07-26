@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
+  <title>CrudServer</title>
+</head>
+<body>
+  <header>
+    <h1>CrudServer API Documentation <span>v0.2</span></h1>
+  </header>
+  <main>
+    <h2>What's it about?</h2>
+    <p class="two-column">CrudServer provides a simple solution for quickly setting up CRUD applications - no need to build your own backend and database. To add a new entity, you simply send a request to <strong>/api/{your_entity_name}</strong>. You can perform all CRUD operations using this path. No request limits, no expiration date. The amount of entities you can create is only limited by the space on your hard drive. And yes, it's all JSON.</p>
+    <h2>Endpoints</h2>
+    <details>
+      <summary>GET /api/{your_entity_name}</summary>
+      <strong>Description</strong>
+      <p>Returns an array containing all resources of the requested entity.</p>
+      <p>When called first time, creates the entity and returns a success message.</p>
+      <strong>Request body</strong>
+      <p>none</p>
+      <strong>Response</strong>
+      <p>200: OK</p>
+      <p>201: Resource created (only when called first time)</p>
+      <strong>Errors</strong>
+      <p>500: Data could not be read.</p>
+      <p>500: Entity could not be created (only when called first time)</p>
+    </details>
+    <details>
+      <summary>GET /api/{your_entity_name}/{id}</summary>
+      <strong>Description</strong>
+      <p>Returns the resource specified by {id}.</p>
+      <strong>Request body</strong>
+      <p>none</p>
+      <strong>Response</strong>
+      <p>200: OK</p>
+      <strong>Errors</strong>
+      <p>404: Resource not found.</p>
+      <p>500: Data could not be read.</p>
+    </details>
+    <details>
+      <summary>POST /api/{your_entity_name}</summary>
+      <strong>Description</strong>
+      <p>Adds a new resource to the specified entity. Returns an object with added id property.</p>
+      <strong>Request body</strong>
+      <p>Object in JSON format</p>
+      <strong>Response</strong>
+      <p>201: Resource created</p>
+      <strong>Errors</strong>
+      <p>400: Resource must not contain an id.</p>
+      <p>500: Data could not be read.</p>
+      <p>500: Data could not be written.</p>
+    </details>
+    <details>
+      <summary>PUT /api/{your_entity_name}/{id}</summary>
+      <strong>Description</strong>
+      <p>Updates the resource specified by {id}. Does not check for data consistency - you could potentially add completely new properties by mistake, so check your spelling!</p>
+      <p>Returns the updated object with its id property.</p>
+      <strong>Request body</strong>
+      <p>Object in JSON format</p>
+      <strong>Response</strong>
+      <p>200: OK</p>
+      <strong>Errors</strong>
+      <p>400: Resource must not contain an id.</p>
+      <p>404: Resource not found.</p>
+      <p>500: Data could not be read.</p>
+      <p>500: Data could not be written.</p>
+    </details>
+    <details>
+      <summary>DELETE /api/{your_entity_name}/{id}</summary>
+      <strong>Description</strong>
+      <p>Deletes the resource specified by {id}.</p>
+      <strong>Request body</strong>
+      <p>none</p>
+      <strong>Response</strong>
+      <p>204: No content</p>
+      <strong>Errors</strong>
+      <p>404: Resource not found.</p>
+      <p>500: Data could not be read.</p>
+      <p>500: Data could not be written.</p>
+    </details>
+    <details>
+      <summary>DELETE /api/{your_entity_name}/all</summary>
+      <strong>Description</strong>
+      <p>Deletes all resources from the specified entity.</p>
+      <p>Keeps lastInsertId in its current state.</p>
+      <strong>Request body</strong>
+      <p>none</p>
+      <strong>Response</strong>
+      <p>204: No content</p>
+      <strong>Errors</strong>
+      <p>500: Data could not be read.</p>
+      <p>500: Data could not be written.</p>
+    </details>
+    <details>
+      <summary>DELETE /api/{your_entity_name}/some</summary>
+      <strong>Description</strong>
+      <p>Deletes multiple resources from the specified entity.</p>
+      <strong>Request body</strong>
+      <p>Array of resource id's</p>
+      <strong>Response</strong>
+      <p>204: No content</p>
+      <strong>Errors</strong>
+      <p>404: Resource not found.</p>
+      <p>500: Data could not be read.</p>
+      <p>500: Data could not be written.</p>
+    </details>
+    <h2>FAQ</h2>
+    <details>
+      <summary>I love foreign keys. Can I use them?</summary>
+      <p>Sure, just add them as properties to the resource you create. But beware this is not a real database, so you cannot add constraints.</p>
+    </details>
+    <details>
+      <summary>I want to delete all resources of an entity. Is there an endpoint for that?</summary>
+      <p>Short answer: no. Long answer: Navigate to the "data" folder of the server, there you will find a JSON file for each entity. Open the file you want to edit, reset the data property to an empty array and reset the lastInsertId property to 0. It should look like that:
+        <code>
+          {"lastInsertId": 0, "data": []}
+        </code>
+      </p>
+    </details>
+    <details>
+      <summary>Can I delete an entire entity?</summary>
+      <p>Navigate to the data folder and delete the JSON file with the name of the entity you want to delete. Then restart the server.</p>
+    </details>
+    <details>
+      <summary>I get an http error code. How can I see what went wrong?</summary>
+      <p>All 400 and 500 responses come with a message object that tells you more about the error. Look at your browser console and you should see something like for example
+        <code>
+          {msg: 'Data could not be read'}
+        </code>
+      </p>
+    </details>
+    <details>
+      <summary>Can I change the port?</summary>
+      <p>The server is configured to run on port 3000. If this gives you trouble, edit the last line in the file app.js and change the 3000 to whatever port you need.</p>
+    </details>
+    <h2>Change Log</h2>
+    <details>
+      <summary>v0.2</summary>
+      <ul>
+        <li>It is no longer needed to create a new entity by sending a initial GET request. Now all requests create a new entity if it does not exist.</li>
+        <li>Added end point <code>GET /api/{entity}/{id}</code> to request a single resource</li>
+        <li>Added end point <code>DELETE /api/{entity}/all</code> to delete all resources of a given entity</li>
+        <li>Added end point <code>DELETE /api/{entity}/some</code> to delete multiple resources of a given entity</li>
+        <li>Fixed bug in PUT handler where properties with falsy values got ignored</li>
+      </ul>
+    </details>
+  </main>
+</body>
+</html>

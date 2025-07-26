@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font: 300 1rem/1.4rem Lato, sans-serif;
+}
+
+header {
+  width: 100vw;
+  height: 80px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+
+h1 span {
+  font-size: 0.8rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.4rem;
+}
+
+p.two-column {
+  column-count: 2;
+  column-gap: 2rem;
+  margin-bottom: 1.4rem;
+}
+
+details {
+  margin-bottom: 1.4rem;
+}
+
+summary {
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  p.two-column {
+    column-count: 1;
+  }
+}
+
+details ul {
+  margin-left: 2rem;
+}
