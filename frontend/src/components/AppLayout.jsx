@@ -9,6 +9,7 @@ const AppLayout = () => {
                 <div className="navbar-nav">
                     <Link to="/groups" className="nav-link">Groups</Link>
                     <Link to="/quiz" className="nav-link">Quiz</Link>
+                    <Link to="/teams" className="nav-link">Teams</Link>
                     <Link to="/run" className="nav-link">Run</Link>
                     <Link to="/results" className="nav-link">Results</Link>
                 </div>

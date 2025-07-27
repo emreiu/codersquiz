@@ -35,6 +35,18 @@ const QuizOverview = () => {
         };
     });
 
+    const handleDeleteQuiz = async (quizId) => {
+        if (!window.confirm('Are you sure you want to delete this quiz?')) return;
+
+        try {
+            await QuizService.remove(quizId);
+            setQuizzes(prev => prev.filter(q => q.id !== quizId));
+        } catch (error) {
+            setError('Failed to delete quiz');
+        }
+    };
+
+
 
     return (
         <div className="container mt-4">
@@ -51,12 +63,27 @@ const QuizOverview = () => {
                                 {sub.quizzes.map((quiz) => (
                                     <li key={quiz.id} className="list-group-item d-flex justify-content-between align-items-center">
                                         {quiz.title}
-                                        <Link
-                                            to={`/quiz/${quiz.groupId}/${quiz.subgroupName}/${quiz.id}/edit`}
-                                            className="btn btn-sm btn-outline-primary"
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div>
+                                            <Link
+                                                to={`/quiz/${quiz.groupId}/${quiz.subgroupName}/${quiz.id}/run`}
+                                                className="btn btn-sm btn-primary me-2"
+                                            >
+                                                Run
+                                            </Link>
+                                            <Link
+                                                to={`/quiz/${quiz.groupId}/${quiz.subgroupName}/${quiz.id}/edit`}
+                                                className="btn btn-sm btn-outline-secondary me-2"
+                                            >
+                                                Edit
+                                            </Link>
+                                            <button
+                                                className="btn btn-sm btn-danger"
+                                                onClick={() => handleDeleteQuiz(quiz.id)}
+                                            >
+                                                Delete
+                                            </button>
+
+                                        </div>
                                     </li>
                                 ))}
                                 {sub.quizzes.length === 0 && <li className="list-group-item">No quizzes</li>}
