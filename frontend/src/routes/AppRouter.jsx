@@ -8,6 +8,7 @@ import TeamManager from "../components/team/TeamManager.jsx";
 import TeamOverview from "../components/team/TeamOverview.jsx";
 import QuizRunnerSetup from "../components/run/QuizRunnerSetup.jsx";
 import QuizRunner from "../components/run/QuizRunner.jsx";
+import ResultView from "../components/results/ResultView.jsx";
 
 const AppRouter = () => {
     return (
@@ -21,7 +22,7 @@ const AppRouter = () => {
                 <Route path="run" element={<QuizRunner />} />
                 <Route path="teams" element={<TeamOverview />} />
                 <Route path="teams/:groupId/manage" element={<TeamManager />} />
-                <Route path="results" element={<div>Results Page</div>} />
+                <Route path="results" element={<ResultView />} />
                 <Route path="*" element={<div>404 - Page Not Found</div>} />
             </Route>
         </Routes>
